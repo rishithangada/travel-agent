@@ -3,6 +3,7 @@ export type PlanRequest = {
   dates?: string;
   budget?: string;
   travelStyle?: string;
+  sessionId?: string;
 };
 
 export type Activity = {

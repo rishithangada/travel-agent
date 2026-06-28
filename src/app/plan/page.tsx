@@ -49,7 +49,7 @@ export default async function PlanPage({ searchParams }: { searchParams: PlanSea
           </div>
         </div>
 
-        <TripResults options={options} />
+        <TripResults options={options} destination={destination} dates={dates} budget={budget} travelStyle={travelStyle} />
       </div>
     </main>
   );

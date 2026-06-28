@@ -1,7 +1,10 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import type { Activity, TripOption } from "@/lib/planner";
+import { getSessionId } from "@/lib/session";
+import { saveTrip } from "@/lib/supabase";
 
 const RANK_STYLES: Record<
   number,
@@ -246,9 +249,53 @@ function TripCard({ option }: { option: TripOption }) {
   );
 }
 
-export function TripResults({ options }: { options: TripOption[] }) {
+function SaveTripOnLoad({
+  destination,
+  dates,
+  budget,
+  travelStyle,
+  options,
+}: {
+  destination: string;
+  dates: string;
+  budget: string;
+  travelStyle: string;
+  options: TripOption[];
+}) {
+  useEffect(() => {
+    const signature = JSON.stringify({ destination, dates, budget, travelStyle, first: options[0]?.totalCost });
+    const key = `saved_trip_${signature}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, "1");
+    saveTrip({
+      session_id: getSessionId(),
+      destination,
+      dates,
+      budget,
+      travel_style: travelStyle,
+      trip_data: { options },
+    }).catch(() => {});
+  }, [budget, dates, destination, options, travelStyle]);
+
+  return null;
+}
+
+export function TripResults({
+  options,
+  destination,
+  dates,
+  budget,
+  travelStyle,
+}: {
+  options: TripOption[];
+  destination: string;
+  dates: string;
+  budget: string;
+  travelStyle: string;
+}) {
   return (
     <>
+      <SaveTripOnLoad destination={destination} dates={dates} budget={budget} travelStyle={travelStyle} options={options} />
       <p className="mb-6 text-sm text-slate-400">
         {options.length} options ranked best to worst — AI-scored on cost, weather, reviews, flexibility, and travel style fit.
       </p>

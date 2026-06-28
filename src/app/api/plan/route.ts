@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { buildTripOptions, sanitizeTravelStyle, type PlanRequest } from "@/lib/planner";
+import { saveTrip } from "@/lib/supabase";
 
 export type { Activity, TripOption } from "@/lib/planner";
 
@@ -11,5 +12,15 @@ export async function POST(request: Request) {
   const travelStyle = sanitizeTravelStyle(body.travelStyle?.trim());
 
   const options = await buildTripOptions(destination, dates, budget, travelStyle);
+  if (body.sessionId) {
+    saveTrip({
+      session_id: body.sessionId,
+      destination,
+      dates,
+      budget,
+      travel_style: travelStyle,
+      trip_data: { options },
+    }).catch(() => {});
+  }
   return NextResponse.json({ options });
 }

@@ -10,12 +10,45 @@ const MESSAGES = [
 ];
 
 const TRENDING = [
-  { city: "Tokyo", country: "Japan", price: "$899", emoji: "🗼" },
-  { city: "Barcelona", country: "Spain", price: "$649", emoji: "🏖" },
-  { city: "Bali", country: "Indonesia", price: "$749", emoji: "🌴" },
+  {
+    city: "Tokyo", country: "Japan", price: "$899", emoji: "🗼",
+    photo: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    city: "Barcelona", country: "Spain", price: "$649", emoji: "🏖",
+    photo: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    city: "Bali", country: "Indonesia", price: "$749", emoji: "🌴",
+    photo: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=600&q=80",
+  },
 ];
 
 const TRAVEL_STYLES = ["Backpacker", "Couples", "Family", "Solo"];
+
+const HOW_IT_WORKS = [
+  {
+    n: "01",
+    title: "Tell us where and when",
+    desc: "Enter destination, travel dates, your total budget, and travel style. Takes 20 seconds.",
+  },
+  {
+    n: "02",
+    title: "AI builds ranked options",
+    desc: "Groq AI generates 3 ranked trip options with real hotel chains, realistic flight costs, and a day-by-day itinerary.",
+  },
+  {
+    n: "03",
+    title: "Book what fits",
+    desc: "Compare the plans, then jump to Skyscanner to book your actual flights and hotels at real prices.",
+  },
+];
+
+const WHY_US = [
+  { icon: "🏆", title: "Ranked, not just listed", desc: "Every option is scored for cost efficiency, weather, reviews, and flexibility — so you see the tradeoffs at a glance." },
+  { icon: "🗓", title: "Day-by-day itinerary", desc: "Up to 3 activities per day with time, duration, cost, and a local tip. Not a generic bucket list — a real plan." },
+  { icon: "💸", title: "Real price anchors", desc: "Flight and hotel costs are pulled from real-world ranges for your destination and season. No made-up numbers." },
+];
 
 function Robot({
   message,
@@ -170,14 +203,17 @@ export default function Home() {
           {/* Hero row: text + robot */}
           <div className="mb-10 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-14">
             <div className="max-w-2xl">
-              <p className="mb-4 text-sm font-medium uppercase tracking-[0.32em] text-cyan-200">
-                AI Travel Agent
-              </p>
-              <h1 className="max-w-full text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
-                Build a trip that fits the way you travel.
+              <div className="mb-5 flex items-center gap-2.5">
+                <span className="text-2xl font-black tracking-tight text-white" style={{ letterSpacing: "-0.04em" }}>Wayfarer</span>
+                <span className="rounded-full bg-cyan-400/15 border border-cyan-400/25 px-2.5 py-0.5 text-xs font-semibold text-cyan-300">AI Travel Agent</span>
+              </div>
+              <h1 className="max-w-full text-4xl font-black leading-[1.0] tracking-tight sm:text-6xl" style={{ letterSpacing: "-0.04em" }}>
+                Your next trip.<br />
+                <span className="text-cyan-300">Planned by AI.</span><br />
+                Booked by you.
               </h1>
-              <p className="mt-6 max-w-full text-lg leading-8 text-slate-200 sm:max-w-xl">
-                Enter a destination, dates, and budget — get ranked trip options with flights, hotels, and a day-by-day plan.
+              <p className="mt-5 max-w-full text-base leading-7 text-slate-300/60 sm:max-w-xl sm:text-lg">
+                Enter a destination, dates, and budget. Get 3 ranked options with real hotel chains, seasonal flight costs, and a day-by-day itinerary — in seconds.
               </p>
             </div>
 
@@ -246,27 +282,102 @@ export default function Home() {
             </button>
           </form>
 
-          {/* Trending destinations */}
+          {/* Trending destinations — photo cards */}
           <div className="mt-10">
             <p className="mb-4 text-sm font-medium uppercase tracking-[0.28em] text-slate-400">
               Trending now
             </p>
             <div className="grid gap-3 sm:grid-cols-3 max-w-[calc(100vw-40px)] sm:max-w-2xl">
-              {TRENDING.map(({ city, country, price, emoji }) => (
+              {TRENDING.map(({ city, country, price, photo }) => (
                 <a
                   key={city}
                   href={`/plan?destination=${encodeURIComponent(city)}&dates=Sep+12+-+Sep+18&budget=%243%2C500&travelStyle=${encodeURIComponent(travelStyle)}`}
-                  className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur transition hover:border-cyan-400/40 hover:bg-white/10"
+                  className="group relative overflow-hidden rounded-xl h-28 flex items-end backdrop-blur transition"
                 >
-                  <span className="text-2xl" aria-hidden="true">{emoji}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium">{city}</p>
-                    <p className="text-xs text-slate-400">{country}</p>
+                  {/* Background photo */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photo}
+                    alt={city}
+                    className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                  />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                  {/* Content */}
+                  <div className="relative z-10 flex w-full items-end justify-between p-4">
+                    <div>
+                      <p className="font-bold text-white leading-none">{city}</p>
+                      <p className="text-xs text-white/55 mt-0.5">{country}</p>
+                    </div>
+                    <span className="shrink-0 text-sm font-bold text-cyan-300 bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-full">
+                      {price}
+                    </span>
                   </div>
-                  <span className="shrink-0 text-sm font-semibold text-cyan-300">{price}</span>
                 </a>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="px-5 py-24 sm:px-10 lg:px-16" style={{ background: "#020617" }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-400/60 mb-3">How it works</p>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+              Trip planned in 3 steps.
+            </h2>
+            <p className="mt-4 text-slate-400 text-lg max-w-xl mx-auto">
+              No travel agent, no endless tabs. Just tell the AI what you want.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-6">
+            {HOW_IT_WORKS.map(({ n, title, desc }) => (
+              <div
+                key={n}
+                className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-6"
+                style={{ borderTop: "1px solid rgba(34,211,238,0.25)" }}
+              >
+                <span className="block text-5xl font-black text-white/[0.06] mb-5 leading-none">{n}</span>
+                <h3 className="text-base font-bold text-white mb-2">{title}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why use it */}
+      <section className="px-5 pb-24 sm:px-10 lg:px-16" style={{ background: "#020617" }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-3 gap-4">
+            {WHY_US.map(({ icon, title, desc }) => (
+              <div
+                key={title}
+                className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 hover:bg-white/[0.04] transition-colors"
+              >
+                <div className="text-3xl mb-4">{icon}</div>
+                <h3 className="text-sm font-bold text-white mb-2 leading-snug">{title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="mt-12 rounded-2xl border border-cyan-400/15 bg-cyan-950/20 px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-xl font-bold text-white">Ready to plan your next trip?</h3>
+              <p className="text-sm text-slate-400 mt-1">Takes 30 seconds. Free, no account needed.</p>
+            </div>
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-6 py-3 font-bold text-slate-950 transition hover:bg-cyan-200 active:scale-95"
+            >
+              Plan my trip →
+            </a>
           </div>
         </div>
       </section>
