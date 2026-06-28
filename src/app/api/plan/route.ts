@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       dates,
       budget,
       travel_style: travelStyle,
-      trip_data: { options },
+      trip_data: options,
     }).catch(() => {});
   }
   return NextResponse.json({ options });

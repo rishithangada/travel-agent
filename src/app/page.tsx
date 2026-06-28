@@ -194,7 +194,7 @@ export default function Home() {
         className="relative flex min-h-screen min-w-0 items-center overflow-hidden px-5 py-12 sm:px-10 lg:px-16"
         style={{
           backgroundImage:
-            "linear-gradient(90deg, rgba(2,6,23,.96), rgba(2,6,23,.80), rgba(2,6,23,.40)), url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=80')",
+            "linear-gradient(90deg, rgba(2,6,23,.92) 0%, rgba(2,6,23,.70) 50%, rgba(2,6,23,.20) 100%), url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=80')",
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}

@@ -273,7 +273,7 @@ function SaveTripOnLoad({
       dates,
       budget,
       travel_style: travelStyle,
-      trip_data: { options },
+      trip_data: options,
     }).catch(() => {});
   }, [budget, dates, destination, options, travelStyle]);
 
